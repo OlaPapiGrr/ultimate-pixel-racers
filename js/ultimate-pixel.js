@@ -47,7 +47,7 @@ function steuereAuto() {
       } else if (keyIsDown(RIGHT_ARROW)) {
       rotZ = rotZ + 3;
     }
-    if (millis() % 2== 0 && acc < 2){
+    if (millis() % 2== 0 && acc < 6){
         acc += 0.5;
     }
     y += cos(rotZ)*acc;
@@ -109,18 +109,18 @@ function wandKollision(){
  
   if(midXtemp > 185 && midXtemp < 800 && midYtemp > 100 && midYtemp < 200){
     acc = 0;
-    y -= cos(rotZ)*2;
-    x += sin(rotZ)*2;
+    y -= cos(rotZ)*1;
+    x += sin(rotZ)*1;
   } 
   if(midXtemp > 180 && midXtemp < 285 && midYtemp > 100 && midYtemp < 420){
     acc = 0;
-    y -= cos(rotZ)*2;
-    x += sin(rotZ)*2;
+    y -= cos(rotZ)*1;
+    x += sin(rotZ)*1;
   }
   if(midXtemp > 650 && midXtemp < 805 && midYtemp > 200 && midYtemp < 420){
     acc = 0;
-    y -= cos(rotZ)*2;
-    x += sin(rotZ)*2;
+    y -= cos(rotZ)*1;
+    x += sin(rotZ)*1;
   }
 }
 
