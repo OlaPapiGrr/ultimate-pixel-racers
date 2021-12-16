@@ -8,22 +8,38 @@ var revacc = 0;
 var background;
 var car1;
 var rect1;
+var count1
+var count2;
+var countDownFertig;
 
 
 function preload(){
   background = loadImage("pictures/Racetreck1.png");
   car1 = loadImage("pictures/Car1.png");
+  count1 = loadImage("pictures/Numb1.png");
+  count2 = loadImage("pictures/Numb2.png")
 }
 
 function setup() { 
 
   createCanvas(1265, 555);
   angleMode(DEGREES);
+  countDownFertig = false;
 } 
 
 function draw() { 
+  image(background,0,0);
+  if(countDownFertig === false){
+    noloop();
+    image(count2,0,0);
+    if(millis()%1000 === 0){
+    image(count1,0,0);
+    }
+    loop();
+    countDownFertig === true;
+  }
   
-  image(background, 0, 0);
+ 
   
   verlangsameAutoAusserhalb();
   wandKollision();
@@ -33,10 +49,7 @@ function draw() {
   image(car1,0,0);
   
   
-  console.log("Y ",mouseY);
-  console.log("X ",mouseX);
-  console.log("mY ",midY);
-  console.log("mX ",midX);
+ 
 }
 
 function steuereAuto() {
@@ -151,5 +164,17 @@ function outOfBounce(){
     rotZ = 90
   } 
 }
+
+async function countdown(){
+  image(background, 0, 0);
+  image(count2,0,0);
+  await sleep(1000);
+  image(count1,0,0);
+  image(background, 0, 0);
+  
+  
+  }
+ 
+
 
 
