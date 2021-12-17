@@ -21,10 +21,14 @@ var stopcountDown;
 
 
 function preload(){
-  backgroundimg = loadImage("pictures/Racetreck1.png");
+  backgroundimg = loadImage("pictures/Racetrack1.png");
   car1 = loadImage("pictures/Car1.png");
   count1 = loadImage("pictures/Numb1.png");
-  count2 = loadImage("pictures/Numb2.png")
+  count2 = loadImage("pictures/Numb2.png");
+  roundnumb0 = loadImage("pictures/Roundnumb0.png")
+  roundnumb1 = loadImage("pictures/Roundnumb1.png")
+  roundnumb2 = loadImage("pictures/Roundnumb2.png")
+  roundnumb3 = loadImage("pictures/Roundnumb3.png")
 }
 
 function setup() { 
@@ -199,7 +203,7 @@ function finishLine(){
   midXtemp = midX;
   midYtemp = midY;
 
-  if(midXtemp > 400 && midXtemp < 450 && midYtemp > 10 && midYtemp < 200){
+  if(midXtemp > 400 && midXtemp < 450 && midYtemp > 10 && midYtemp < 180){
     if(checkpoint == true){
       finish = true
     }
@@ -211,9 +215,15 @@ function finishLine(){
     raceround = raceround + 1;
     finish = false;
     checkpoint = false;
-    console.log(finish);
-    console.log(checkpoint);
-    console.log(raceround);
+  }
+  if (raceround == 0){
+    image(roundnumb0,0,0);
+  }else if (raceround == 1){
+    image(roundnumb1,0,0);
+  }else if (raceround == 2){
+    image(roundnumb2,0,0);
+  }else if (raceround == 3){
+    image(roundnumb3,0,0);
   }
 }
 
@@ -229,6 +239,7 @@ function wait(secondsToWait) {
 function keyPressed(){
   if(key === 'r'){
     restartGame();
+    raceround = 0;
   }
 }
 
@@ -238,5 +249,9 @@ function restartGame() {
   y = 65;
   rotZ = 90;
 }
+
+function time(){
+  
+} 
 
 
