@@ -1,3 +1,4 @@
+
 var x = 455;
 var y = 65;
 var midX;
@@ -5,16 +6,22 @@ var midY;
 var rotZ = 90;
 var acc = 0;
 var revacc = 0;
-var background;
+var backgroundimg;
 var car1;
 var rect1;
 var count1
 var count2;
 var countDownFertig;
+var finish = false;
+var checkpoint = false;
+var raceround = 0;
+var backgroundimg;
+var countDown ;
+var stopcountDown;
 
 
 function preload(){
-  background = loadImage("pictures/Racetreck1.png");
+  backgroundimg = loadImage("pictures/Racetreck1.png");
   car1 = loadImage("pictures/Car1.png");
   count1 = loadImage("pictures/Numb1.png");
   count2 = loadImage("pictures/Numb2.png")
@@ -25,31 +32,26 @@ function setup() {
   createCanvas(1265, 555);
   angleMode(DEGREES);
   countDownFertig = false;
+  countDown = 3;
+  stopcountDown = 0;
+  image(backgroundimg,0,0);
+  image(car1,0,0);
 } 
 
 function draw() { 
-  image(background,0,0);
-  if(countDownFertig === false){
-    noloop();
-    image(count2,0,0);
-    if(millis()%1000 === 0){
-    image(count1,0,0);
+    image(backgroundimg,0,0);
+    
+    if (countDown >= 0){ 
+      startGame();
+    } else  {
+      finishLine();
+      verlangsameAutoAusserhalb();
+      wandKollision();
+      outOfBounce();
+      steuereAuto();
     }
-    loop();
-    countDownFertig === true;
-  }
-  
- 
-  
-  verlangsameAutoAusserhalb();
-  wandKollision();
-  outOfBounce();
-  steuereAuto();
-  
+
   image(car1,0,0);
-  
-  
- 
 }
 
 function steuereAuto() {
@@ -90,6 +92,24 @@ function steuereAuto() {
   rotate(rotZ);
 
  
+}
+
+function startGame() {
+      
+   
+    image(car1,0,0);
+    console.log(countDown)
+    countDown--;
+
+    if(countDown === 2){
+      image(count2,0,0);
+      
+    } else if(countDown === 1){
+      image(backgroundimg,0,0);
+     
+      image(count1,0,0);
+    }
+    wait(1,countDown);
 }
 
 
@@ -143,38 +163,80 @@ function outOfBounce(){
   midXtemp = midX;
   midYtemp = midY;
 
-  if(midXtemp > 0 && midXtemp < 1210 && midYtemp > 0 && midYtemp < 2){
+  if(midXtemp > 0 && midXtemp < 1210 && midYtemp > -50 && midYtemp < -15){
     x = 370
     y = 65
     rotZ = 90
+    finish = false;
+    checkpoint = false;
   } 
   if(midXtemp > 0 && midXtemp < 2 && midYtemp > 0 && midYtemp < 555){
     x = 370
     y = 65
     rotZ = 90
+    finish = false;
+    checkpoint = false;
   } 
   if(midXtemp > 0 && midXtemp < 1210 && midYtemp > 554 && midYtemp < 555){
     x = 370
     y = 65
     rotZ = 90
+    finish = false;
+    checkpoint = false;
   } 
   if(midXtemp > 1015 && midXtemp < 1210 && midYtemp > 0 && midYtemp < 555){
     x = 370
     y = 65
     rotZ = 90
+    finish = false;
+    checkpoint = false;
   } 
 }
 
-async function countdown(){
-  image(background, 0, 0);
-  image(count2,0,0);
-  await sleep(1000);
-  image(count1,0,0);
-  image(background, 0, 0);
-  
-  
-  }
- 
+function finishLine(){
+  midX = x + 13;
+  midY = y - 22.5;
+  midXtemp = midX;
+  midYtemp = midY;
 
+  if(midXtemp > 400 && midXtemp < 450 && midYtemp > 10 && midYtemp < 200){
+    if(checkpoint == true){
+      finish = true
+    }
+  }
+  if(midXtemp > 400 && midXtemp < 450 && midYtemp > 200 && midYtemp < 555){
+    checkpoint = true;
+  }
+  if(finish == true && checkpoint == true){
+    raceround = raceround + 1;
+    finish = false;
+    checkpoint = false;
+    console.log(finish);
+    console.log(checkpoint);
+    console.log(raceround);
+  }
+}
+
+function wait(secondsToWait) {
+
+  let future = Date.now() + secondsToWait * 1000;
+
+  while (future > Date.now()) {
+    // do nothing 
+  }
+}
+
+function keyPressed(){
+  if(key === 'r'){
+    restartGame();
+  }
+}
+
+function restartGame() {
+  countDown = 3;
+  x = 455;
+  y = 65;
+  rotZ = 90;
+}
 
 
