@@ -18,6 +18,24 @@ var raceround = 0;
 var backgroundimg;
 var countDown ;
 var stopcountDown;
+var time;
+var fastesttime;
+var fastesttime1;
+var fastesttime2;
+var fastesttime3;
+var restarttime;
+var temptime;
+var restarttime = 0;
+var tempquestion0 = true;
+var tempquestion1 = true;
+var tempquestion2 = true;
+var tempquestion3 = true;
+var tempquestion4 = true;
+var tempquestion5 = true;
+var tempquestion6 = true;
+var startquestion1 = true;
+var startquestion2 = true;
+
 
 
 function preload(){
@@ -25,10 +43,12 @@ function preload(){
   car1 = loadImage("pictures/Car1.png");
   count1 = loadImage("pictures/Numb1.png");
   count2 = loadImage("pictures/Numb2.png");
-  roundnumb0 = loadImage("pictures/Roundnumb0.png")
-  roundnumb1 = loadImage("pictures/Roundnumb1.png")
-  roundnumb2 = loadImage("pictures/Roundnumb2.png")
-  roundnumb3 = loadImage("pictures/Roundnumb3.png")
+  startimg = loadImage("pictures/RacetrackStart.png")
+  roundnumb0 = loadImage("pictures/Roundnumb0.png");
+  roundnumb1 = loadImage("pictures/Roundnumb1.png");
+  roundnumb2 = loadImage("pictures/Roundnumb2.png");
+  roundnumb3 = loadImage("pictures/Roundnumb3.png");
+  fonttime = loadFont("pictures/Minecraft.ttf");
 }
 
 function setup() { 
@@ -43,19 +63,29 @@ function setup() {
 } 
 
 function draw() { 
+  if(startquestion2 === true){
+    image(startimg,0,0);
+  }
+  startquestion2 = false;
+  if(key === ' ' || startquestion1 === false){ 
     image(backgroundimg,0,0);
-    
+    startquestion1 = false
     if (countDown >= 0){ 
       startGame();
+      finishLine();
+      
     } else  {
       finishLine();
+      functionfastesttime();
+      functiontime();
       verlangsameAutoAusserhalb();
       wandKollision();
       outOfBounce();
       steuereAuto();
+      oil();
     }
-
-  image(car1,0,0);
+    image(car1,0,0);
+  }
 }
 
 function steuereAuto() {
@@ -239,7 +269,6 @@ function wait(secondsToWait) {
 function keyPressed(){
   if(key === 'r'){
     restartGame();
-    raceround = 0;
   }
 }
 
@@ -248,10 +277,94 @@ function restartGame() {
   x = 455;
   y = 65;
   rotZ = 90;
+  raceround = 0;
+  finish = false;
+  checkpoint = false;
+  fastesttime = "";
+  startquestion1 = true;
+  startquestion2 = true;
 }
 
-function time(){
+function functiontime(){
+  time = millis();
+  time = time / 1000;
+  if(tempquestion0 === true){
+    time = time - 3;
+  }
+  if(raceround === 1){
+    if(tempquestion1 === true){
+    temptime = time;
+    }
+    tempquestion1 = false;
+    time = time - temptime
+  }
+  if(raceround === 2){
+    if(tempquestion2 === true){
+      temptime = time;
+      }
+      tempquestion2 = false;
+    time = time - temptime
+  }
+  if(raceround === 3){
+    if(tempquestion3 === true){
+      temptime = time;
+      }
+      tempquestion3 = false;
+    time = time - temptime
+  }
   
+  text(time, 1035,345);
+  fill(255,255,255);
+  textFont(fonttime);
+  textSize(20)
 } 
+
+function functionfastesttime(){
+  if(raceround === 1){
+    if(tempquestion4 === true){
+    fastesttime1 = time;
+    }
+    tempquestion4 = false;
+    fastesttime = fastesttime1;
+    
+  }
+  if(raceround === 2){
+    if(tempquestion5 === true){
+    fastesttime2 = time;
+    }
+    tempquestion5 = false;
+    if(fastesttime2 < fastesttime){
+      fastesttime = fastesttime2;
+    }
+  }
+  if(raceround === 3){
+    if(tempquestion6 === true){
+    fastesttime3 = time;
+    }
+    tempquestion6 = false;
+    if(fastesttime3 < fastesttime){
+      fastesttime = fastesttime3;
+    }
+  }
+  text(fastesttime, 1035,475);
+  fill(255,255,255);
+  textFont(fonttime);
+  textSize(20)
+}
+
+function oil(){
+  midX = x + 13;
+  midY = y - 22.5;
+  midXtemp = midX;
+  midYtemp = midY;
+
+  if(midXtemp > 725 && midXtemp < 765 && midYtemp > 10 && midYtemp < 60){
+    acc = 1;
+  } else if(midXtemp > 90 && midXtemp < 145 && midYtemp > 305 && midYtemp < 350){
+    acc = 1;
+  } else if(midXtemp > 470 && midXtemp < 550 && midYtemp > 100 && midYtemp < 250){
+    acc = 1;
+  }
+}
 
 
