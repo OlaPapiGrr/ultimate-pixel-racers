@@ -35,6 +35,11 @@ var tempquestion5 = true;
 var tempquestion6 = true;
 var startquestion1 = true;
 var startquestion2 = true;
+var toofast = false;
+var resettime = 0;
+var backgroundsong;
+
+
 
 
 
@@ -49,10 +54,12 @@ function preload(){
   roundnumb2 = loadImage("pictures/Roundnumb2.png");
   roundnumb3 = loadImage("pictures/Roundnumb3.png");
   fonttime = loadFont("pictures/Minecraft.ttf");
+  endimg = loadImage("pictures/RacetrackEnd.png");
+  gameover = loadImage("pictures/RacetrackGameOver.png");
 }
 
 function setup() { 
-
+  
   createCanvas(1265, 555);
   angleMode(DEGREES);
   countDownFertig = false;
@@ -63,34 +70,50 @@ function setup() {
 } 
 
 function draw() { 
-  if(startquestion2 === true){
-    image(startimg,0,0);
-  }
-  startquestion2 = false;
-  if(key === ' ' || startquestion1 === false){ 
-    image(backgroundimg,0,0);
-    startquestion1 = false
-    if (countDown >= 0){ 
-      startGame();
-      finishLine();
-      
-    } else  {
-      finishLine();
-      functionfastesttime();
-      functiontime();
-      verlangsameAutoAusserhalb();
-      wandKollision();
-      outOfBounce();
-      steuereAuto();
-      oil();
+  if(raceround < 4 && toofast === false){
+    if(startquestion2 === true){
+      image(startimg,0,0);
     }
-    image(car1,0,0);
+    startquestion2 = false;
+    if(key === ' ' || startquestion1 === false){ 
+      image(backgroundimg,0,0);
+      startquestion1 = false
+      if (countDown >= 0){ 
+        startGame();
+        finishLine();
+      } else  {
+        
+        destroyed();
+        finishLine();
+        functionfastesttime();
+        functiontime();
+        showtime();
+        verlangsameAutoAusserhalb();
+        wandKollision();
+        outOfBounce();
+        steuereAuto();
+        oil();
+        speed();
+      }
+      image(car1,0,0);
+    }
+  } else if (raceround > 3 && toofast === false){
+    image(endimg,0,0);
+    functionfastesttime();
+    text(fastesttime, 460,470);
+    fill(255,255,255);
+    textFont(fonttime);
+    textSize(20)
+  } else if(toofast === true){
+    image(gameover,0,0);
   }
+  
 }
 
 function steuereAuto() {
   
   if (keyIsDown(UP_ARROW)) {
+    powerstartacc = true;
     if (keyIsDown(LEFT_ARROW)) {
       rotZ = rotZ - 3;
       } else if (keyIsDown(RIGHT_ARROW)) {
@@ -283,6 +306,7 @@ function restartGame() {
   fastesttime = "";
   startquestion1 = true;
   startquestion2 = true;
+  toofast = false;
 }
 
 function functiontime(){
@@ -312,11 +336,6 @@ function functiontime(){
       tempquestion3 = false;
     time = time - temptime
   }
-  
-  text(time, 1035,345);
-  fill(255,255,255);
-  textFont(fonttime);
-  textSize(20)
 } 
 
 function functionfastesttime(){
@@ -326,7 +345,6 @@ function functionfastesttime(){
     }
     tempquestion4 = false;
     fastesttime = fastesttime1;
-    
   }
   if(raceround === 2){
     if(tempquestion5 === true){
@@ -346,6 +364,11 @@ function functionfastesttime(){
       fastesttime = fastesttime3;
     }
   }
+  
+}
+
+function showtime(){
+  text(time, 1035,345);
   text(fastesttime, 1035,475);
   fill(255,255,255);
   textFont(fonttime);
@@ -366,5 +389,38 @@ function oil(){
     acc = 1;
   }
 }
+
+function speed(){
+  midX = x + 13;
+  midY = y - 22.5;
+  midXtemp = midX;
+  midYtemp = midY;
+
+  if(midXtemp > 140 && midXtemp < 250 && midYtemp > 155 && midYtemp < 225){
+    acc = 7;
+  } else if(midXtemp > 740 && midXtemp < 850 && midYtemp > 280 && midYtemp < 350){
+    acc = 7;
+  }
+}
+
+function destroyed(){
+  midX = x + 13;
+  midY = y - 22.5;
+  midXtemp = midX;
+  midYtemp = midY;
+ 
+  if(midXtemp > 185 && midXtemp < 800 && midYtemp > 100 && midYtemp < 200 && acc >= 5 && acc >= 6){
+    toofast = true;
+  } 
+  if(midXtemp > 180 && midXtemp < 285 && midYtemp > 100 && midYtemp < 420  && acc >= 5 && acc >= 6){
+    toofast = true;
+  }
+  if(midXtemp > 650 && midXtemp < 805 && midYtemp > 200 && midYtemp < 420  && acc >= 5 && acc >= 6){
+    toofast = true;
+  }
+}
+
+
+
 
 
