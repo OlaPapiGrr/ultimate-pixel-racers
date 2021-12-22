@@ -1,13 +1,21 @@
 
 var x = 455;
 var y = 65;
+var a = 455;
+var b = 85
 var midX;
 var midY;
+var midA;
+var midB;
 var rotZ = 90;
+var rotC = 90;
 var acc = 0;
 var revacc = 0;
+var acc2 = 0;
+var revacc2 = 0;
 var backgroundimg;
 var car1;
+var car2;
 var rect1;
 var count1
 var count2;
@@ -38,6 +46,7 @@ var startquestion2 = true;
 var toofast = false;
 var resettime = 0;
 var backgroundsong;
+var twop = false;
 
 
 
@@ -46,6 +55,7 @@ var backgroundsong;
 function preload(){
   backgroundimg = loadImage("pictures/Racetrack1.png");
   car1 = loadImage("pictures/Car1.png");
+  car2 = loadImage("pictures/Car2.png")
   count1 = loadImage("pictures/Numb1.png");
   count2 = loadImage("pictures/Numb2.png");
   startimg = loadImage("pictures/RacetrackStart.png")
@@ -66,7 +76,6 @@ function setup() {
   countDown = 3;
   stopcountDown = 0;
   image(backgroundimg,0,0);
-  image(car1,0,0);
 } 
 
 function draw() { 
@@ -82,7 +91,6 @@ function draw() {
         startGame();
         finishLine();
       } else  {
-        
         destroyed();
         finishLine();
         functionfastesttime();
@@ -91,11 +99,15 @@ function draw() {
         verlangsameAutoAusserhalb();
         wandKollision();
         outOfBounce();
+        steuereAuto2();
         steuereAuto();
+        
         oil();
         speed();
       }
-      image(car1,0,0);
+      if(twop = true){
+        
+      }
     }
   } else if (raceround > 3 && toofast === false){
     image(endimg,0,0);
@@ -113,7 +125,6 @@ function draw() {
 function steuereAuto() {
   
   if (keyIsDown(UP_ARROW)) {
-    powerstartacc = true;
     if (keyIsDown(LEFT_ARROW)) {
       rotZ = rotZ - 3;
       } else if (keyIsDown(RIGHT_ARROW)) {
@@ -145,9 +156,50 @@ function steuereAuto() {
       }
      }
     }
+  
   translate(x,y);
   rotate(rotZ);
+  image(car1,0,0);
+ 
+}
 
+function steuereAuto2() {
+  
+  if (keyIsDown(87)) {
+    if (keyIsDown(65)) {
+      rotC = rotC - 3;
+      } else if (keyIsDown(68)) {
+      rotC = rotC + 3;
+    }
+    if (millis() % 2== 0 && acc2 < 6){
+        acc2 += 0.5;
+    }
+    b += cos(rotC)*acc2;
+    a -= sin(rotC)*acc2;
+  } else if (keyIsDown(83)) {
+    
+    if (keyIsDown(68)) {
+    rotC = rotC + 3;
+  } else if (keyIsDown(65)) {
+    rotC = rotC - 3;
+  }
+  if (millis() % 2== 0 && revacc2 < 1){
+    revacc2 += 0.5;
+  }
+    b -= cos(rotC)*revacc2;
+    a += sin(rotC)*revacc2;
+  } else {
+     while(acc2 != 0){
+      if (millis() % 2== 0){
+        tempacc2 = acc2;
+        tempacc2 -= 0.5;
+        acc2 = tempacc2;
+      }
+     }
+    }
+  translate(a,b);
+  rotate(rotC);
+  image(car2,0,0);
  
 }
 
