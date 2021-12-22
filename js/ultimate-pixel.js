@@ -37,7 +37,8 @@ var startquestion2 = true;
 var toofast = false;
 var resettime = 0;
 var backgroundsong;
-var twop = false;
+var raceStartTime;
+var expiredRaceTime;
 
 function preload(){
   backgroundimg = loadImage("pictures/Racetrack1.png");
@@ -149,6 +150,7 @@ function startGame() {
     image(count1,0,0);
   }
   wait(1,countDown);
+  raceStartTime = new Date();
 }
 
 
@@ -346,8 +348,13 @@ function functionfastesttime(){
   }
 }
 
+function calculateRaceTime(){
+  expiredRaceTime = Math.abs(new Date() - raceStartTime) / 1000;
+}
+
 function showtime(){
-  text(time, 1035,345);
+  calculateRaceTime();
+  text(expiredRaceTime, 1035,345);
   text(fastesttime, 1035,475);
   fill(255,255,255);
   textFont(fonttime);
