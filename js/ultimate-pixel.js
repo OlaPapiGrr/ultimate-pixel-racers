@@ -18,7 +18,8 @@ var raceround = 0;
 var backgroundimg;
 var countDown ;
 var stopcountDown;
-var time;
+var roundTime;
+var expiredRaceTime;
 var fastesttime;
 var fastesttime1;
 var fastesttime2;
@@ -38,7 +39,7 @@ var startquestion2 = true;
 var toofast = false;
 var resettime = 0;
 var backgroundsong;
-
+var raceStartTime;  // speichert Zeitpunkt (Uhrzeit) des Starts des Games 
 
 
 
@@ -86,7 +87,7 @@ function draw() {
         destroyed();
         finishLine();
         functionfastesttime();
-        functiontime();
+        calculateRoundTime();
         showtime();
         verlangsameAutoAusserhalb();
         wandKollision();
@@ -152,8 +153,7 @@ function steuereAuto() {
 }
 
 function startGame() {
-      
-   
+
     image(car1,0,0);
     console.log(countDown)
     countDown--;
@@ -166,7 +166,10 @@ function startGame() {
      
       image(count1,0,0);
     }
-    wait(1,countDown);
+    wait(1, countDown);
+
+
+    raceStartTime = new Date();
 }
 
 
@@ -309,46 +312,47 @@ function restartGame() {
   toofast = false;
 }
 
-function functiontime(){
-  time = millis();
-  time = time / 1000;
+function calculateRoundTime(){
+  
+  roundTime = millis();
+  roundTime = roundTime / 1000;
   if(tempquestion0 === true){
-    time = time - 3;
+    roundTime = roundTime - 3;
   }
   if(raceround === 1){
     if(tempquestion1 === true){
-    temptime = time;
+    temptime = roundTime;
     }
     tempquestion1 = false;
-    time = time - temptime
+    roundTime = roundTime - temptime
   }
   if(raceround === 2){
     if(tempquestion2 === true){
-      temptime = time;
+      temptime = roundTime;
       }
       tempquestion2 = false;
-    time = time - temptime
+    roundTime = roundTime - temptime
   }
   if(raceround === 3){
     if(tempquestion3 === true){
-      temptime = time;
+      temptime = roundTime;
       }
       tempquestion3 = false;
-    time = time - temptime
+    roundTime = roundTime - temptime
   }
 } 
 
 function functionfastesttime(){
   if(raceround === 1){
     if(tempquestion4 === true){
-    fastesttime1 = time;
+    fastesttime1 = roundTime;
     }
     tempquestion4 = false;
     fastesttime = fastesttime1;
   }
   if(raceround === 2){
     if(tempquestion5 === true){
-    fastesttime2 = time;
+    fastesttime2 = roundTime;
     }
     tempquestion5 = false;
     if(fastesttime2 < fastesttime){
@@ -357,7 +361,7 @@ function functionfastesttime(){
   }
   if(raceround === 3){
     if(tempquestion6 === true){
-    fastesttime3 = time;
+    fastesttime3 = roundTime;
     }
     tempquestion6 = false;
     if(fastesttime3 < fastesttime){
@@ -367,8 +371,13 @@ function functionfastesttime(){
   
 }
 
+function calculateRaceTime() {
+  expiredRaceTime = Math.abs(new Date() - raceStartTime) / 1000;
+}
+
 function showtime(){
-  text(time, 1035,345);
+  calculateRaceTime(); 
+  text(expiredRaceTime, 1035,345);
   text(fastesttime, 1035,475);
   fill(255,255,255);
   textFont(fonttime);
