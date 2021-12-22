@@ -8,7 +8,6 @@ var acc = 0;
 var revacc = 0;
 var backgroundimg;
 var car1;
-var rect1;
 var count1
 var count2;
 var countDownFertig;
@@ -38,10 +37,7 @@ var startquestion2 = true;
 var toofast = false;
 var resettime = 0;
 var backgroundsong;
-
-
-
-
+var twop = false;
 
 function preload(){
   backgroundimg = loadImage("pictures/Racetrack1.png");
@@ -59,14 +55,12 @@ function preload(){
 }
 
 function setup() { 
-  
   createCanvas(1265, 555);
   angleMode(DEGREES);
   countDownFertig = false;
   countDown = 3;
   stopcountDown = 0;
   image(backgroundimg,0,0);
-  image(car1,0,0);
 } 
 
 function draw() { 
@@ -76,13 +70,12 @@ function draw() {
     }
     startquestion2 = false;
     if(key === ' ' || startquestion1 === false){ 
-      image(backgroundimg,0,0);
-      startquestion1 = false
+        image(backgroundimg,0,0);
+        startquestion1 = false;
       if (countDown >= 0){ 
         startGame();
         finishLine();
-      } else  {
-        
+      } else {
         destroyed();
         finishLine();
         functionfastesttime();
@@ -90,14 +83,13 @@ function draw() {
         showtime();
         verlangsameAutoAusserhalb();
         wandKollision();
-        outOfBounce();
+        outOfBounce()
         steuereAuto();
         oil();
         speed();
       }
-      image(car1,0,0);
     }
-  } else if (raceround > 3 && toofast === false){
+  } else if (raceround > 3 && toofast === false) {
     image(endimg,0,0);
     functionfastesttime();
     text(fastesttime, 460,470);
@@ -107,35 +99,31 @@ function draw() {
   } else if(toofast === true){
     image(gameover,0,0);
   }
-  
 }
 
 function steuereAuto() {
-  
   if (keyIsDown(UP_ARROW)) {
-    powerstartacc = true;
     if (keyIsDown(LEFT_ARROW)) {
       rotZ = rotZ - 3;
-      } else if (keyIsDown(RIGHT_ARROW)) {
+    } else if (keyIsDown(RIGHT_ARROW)) {
       rotZ = rotZ + 3;
     }
     if (millis() % 2== 0 && acc < 6){
-        acc += 0.5;
+      acc += 0.5;
     }
     y += cos(rotZ)*acc;
     x -= sin(rotZ)*acc;
   } else if (keyIsDown(DOWN_ARROW)) {
-    
     if (keyIsDown(RIGHT_ARROW)) {
-    rotZ = rotZ + 3;
-  } else if (keyIsDown(LEFT_ARROW)) {
-    rotZ = rotZ - 3;
-  }
-  if (millis() % 2== 0 && revacc < 1){
-    revacc += 0.5;
-  }
-    y -= cos(rotZ)*revacc;
-    x += sin(rotZ)*revacc;
+      rotZ = rotZ + 3;
+    } else if (keyIsDown(LEFT_ARROW)) {
+      rotZ = rotZ - 3;
+    }
+    if (millis() % 2== 0 && revacc < 1){
+      revacc += 0.5;
+    }
+      y -= cos(rotZ)*revacc;
+      x += sin(rotZ)*revacc;
   } else {
      while(acc != 0){
       if (millis() % 2== 0){
@@ -147,26 +135,20 @@ function steuereAuto() {
     }
   translate(x,y);
   rotate(rotZ);
-
- 
+  image(car1,0,0);
 }
 
-function startGame() {
-      
-   
-    image(car1,0,0);
-    console.log(countDown)
-    countDown--;
-
-    if(countDown === 2){
-      image(count2,0,0);
-      
-    } else if(countDown === 1){
-      image(backgroundimg,0,0);
-     
-      image(count1,0,0);
-    }
-    wait(1,countDown);
+function startGame() { 
+  image(car1,0,0);
+  console.log(countDown)
+  countDown--;
+  if(countDown === 2){
+    image(count2,0,0);
+  } else if(countDown === 1){
+    image(backgroundimg,0,0);
+    image(count1,0,0);
+  }
+  wait(1,countDown);
 }
 
 
@@ -281,9 +263,7 @@ function finishLine(){
 }
 
 function wait(secondsToWait) {
-
   let future = Date.now() + secondsToWait * 1000;
-
   while (future > Date.now()) {
     // do nothing 
   }
@@ -325,15 +305,15 @@ function functiontime(){
   if(raceround === 2){
     if(tempquestion2 === true){
       temptime = time;
-      }
-      tempquestion2 = false;
+    }
+    tempquestion2 = false;
     time = time - temptime
   }
   if(raceround === 3){
     if(tempquestion3 === true){
       temptime = time;
-      }
-      tempquestion3 = false;
+    }
+    tempquestion3 = false;
     time = time - temptime
   }
 } 
@@ -341,14 +321,14 @@ function functiontime(){
 function functionfastesttime(){
   if(raceround === 1){
     if(tempquestion4 === true){
-    fastesttime1 = time;
+      fastesttime1 = time;
     }
     tempquestion4 = false;
     fastesttime = fastesttime1;
   }
   if(raceround === 2){
     if(tempquestion5 === true){
-    fastesttime2 = time;
+      fastesttime2 = time;
     }
     tempquestion5 = false;
     if(fastesttime2 < fastesttime){
@@ -357,14 +337,13 @@ function functionfastesttime(){
   }
   if(raceround === 3){
     if(tempquestion6 === true){
-    fastesttime3 = time;
+      fastesttime3 = time;
     }
     tempquestion6 = false;
     if(fastesttime3 < fastesttime){
       fastesttime = fastesttime3;
     }
   }
-  
 }
 
 function showtime(){
@@ -419,8 +398,3 @@ function destroyed(){
     toofast = true;
   }
 }
-
-
-
-
-
