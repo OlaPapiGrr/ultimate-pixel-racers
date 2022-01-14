@@ -18,26 +18,15 @@ var backgroundimg;
 var countDown ;
 var stopcountDown;
 var time;
-var fastesttime;
-var fastesttime1;
-var fastesttime2;
-var fastesttime3;
-var restarttime;
-var temptime;
-var restarttime = 0;
-var tempquestion0 = true;
-var tempquestion1 = true;
-var tempquestion2 = true;
-var tempquestion3 = true;
-var tempquestion4 = true;
-var tempquestion5 = true;
-var tempquestion6 = true;
+var fastestTimeOverall = 0;
 var startquestion1 = true;
 var startquestion2 = true;
 var toofast = false;
 var resettime = 0;
 var backgroundsong;
 var raceStartTime;
+var roundStartTime; 
+var roundEndTime;
 var expiredRaceTime;
 
 function preload(){
@@ -65,6 +54,7 @@ function setup() {
 } 
 
 function draw() { 
+ 
   if(raceround < 4 && toofast === false){
     if(startquestion2 === true){
       image(startimg,0,0);
@@ -75,12 +65,9 @@ function draw() {
         startquestion1 = false;
       if (countDown >= 0){ 
         startGame();
-        finishLine();
       } else {
         destroyed();
         finishLine();
-        functionfastesttime();
-        functiontime();
         showtime();
         verlangsameAutoAusserhalb();
         wandKollision();
@@ -92,8 +79,7 @@ function draw() {
     }
   } else if (raceround > 3 && toofast === false) {
     image(endimg,0,0);
-    functionfastesttime();
-    text(fastesttime, 460,470);
+    text(fastestTimeOverall, 460,470);
     fill(255,255,255);
     textFont(fonttime);
     textSize(20)
@@ -153,6 +139,7 @@ function startGame() {
   image(car1,0,0);
   wait(1,countDown);
   raceStartTime = new Date();
+  roundStartTime = new Date();
 }
 
 
@@ -254,7 +241,18 @@ function finishLine(){
     raceround = raceround + 1;
     finish = false;
     checkpoint = false;
+
+    roundEndTime = new Date();
+
+    if (fastestTimeOverall == 0) {
+      fastestTimeOverall = (roundEndTime - roundStartTime) / 1000;
+    } else if (fastestTimeOverall > (roundEndTime - roundStartTime) / 1000) {
+        fastestTimeOverall =  (roundEndTime - roundStartTime) / 1000;
+    }
+
+    roundStartTime = new Date();
   }
+
   if (raceround == 0){
     image(roundnumb0,0,0);
   }else if (raceround == 1){
@@ -287,68 +285,9 @@ function restartGame() {
   raceround = 0;
   finish = false;
   checkpoint = false;
-  fastesttime = "";
   startquestion1 = true;
   startquestion2 = true;
   toofast = false;
-  
-}
-
-function functiontime(){
-  time = millis();
-  time = time / 1000;
-  if(tempquestion0 === true){
-    time = time - 3;
-  }
-  if(raceround === 1){
-    if(tempquestion1 === true){
-    temptime = time;
-    }
-    tempquestion1 = false;
-    time = time - temptime
-  }
-  if(raceround === 2){
-    if(tempquestion2 === true){
-      temptime = time;
-    }
-    tempquestion2 = false;
-    time = time - temptime
-  }
-  if(raceround === 3){
-    if(tempquestion3 === true){
-      temptime = time;
-    }
-    tempquestion3 = false;
-    time = time - temptime
-  }
-} 
-
-function functionfastesttime(){
-  if(raceround === 1){
-    if(tempquestion4 === true){
-      fastesttime1 = time - 2;
-    }
-    tempquestion4 = false;
-    fastesttime = fastesttime1;
-  }
-  if(raceround === 2){
-    if(tempquestion5 === true){
-      fastesttime2 = time;
-    }
-    tempquestion5 = false;
-    if(fastesttime2 < fastesttime){
-      fastesttime = fastesttime2;
-    }
-  }
-  if(raceround === 3){
-    if(tempquestion6 === true){
-      fastesttime3 = time;
-    }
-    tempquestion6 = false;
-    if(fastesttime3 < fastesttime){
-      fastesttime = fastesttime3;
-    }
-  }
 }
 
 function calculateRaceTime(){
@@ -358,7 +297,9 @@ function calculateRaceTime(){
 function showtime(){
   calculateRaceTime();
   text(expiredRaceTime, 1110,345);
-  text(fastesttime, 1035,475);
+  if (fastestTimeOverall > 0) {
+    text(fastestTimeOverall, 1035,475);
+  }
   fill(255,255,255);
   textFont(fonttime);
   textSize(20)
