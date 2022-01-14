@@ -288,6 +288,7 @@ function restartGame() {
   startquestion1 = true;
   startquestion2 = true;
   toofast = false;
+  fastestTimeOverall = 0;
 }
 
 function calculateRaceTime(){
@@ -298,7 +299,7 @@ function showtime(){
   calculateRaceTime();
   text(expiredRaceTime, 1110,345);
   if (fastestTimeOverall > 0) {
-    text(fastestTimeOverall, 1035,475);
+    text(fastestTimeOverall, 1110,475);
   }
   fill(255,255,255);
   textFont(fonttime);
