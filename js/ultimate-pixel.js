@@ -145,10 +145,12 @@ function startGame() {
   countDown--;
   if(countDown === 2){
     image(count2,0,0);
+    image(car1,0,0);
   } else if(countDown === 1){
     image(backgroundimg,0,0);
     image(count1,0,0);
   }
+  image(car1,0,0);
   wait(1,countDown);
   raceStartTime = new Date();
 }
@@ -289,6 +291,7 @@ function restartGame() {
   startquestion1 = true;
   startquestion2 = true;
   toofast = false;
+  
 }
 
 function functiontime(){
@@ -323,7 +326,7 @@ function functiontime(){
 function functionfastesttime(){
   if(raceround === 1){
     if(tempquestion4 === true){
-      fastesttime1 = time;
+      fastesttime1 = time - 2;
     }
     tempquestion4 = false;
     fastesttime = fastesttime1;
@@ -354,7 +357,7 @@ function calculateRaceTime(){
 
 function showtime(){
   calculateRaceTime();
-  text(expiredRaceTime, 1035,345);
+  text(expiredRaceTime, 1110,345);
   text(fastesttime, 1035,475);
   fill(255,255,255);
   textFont(fonttime);
