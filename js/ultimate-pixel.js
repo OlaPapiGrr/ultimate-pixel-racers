@@ -79,10 +79,10 @@ function draw() {
     }
   } else if (raceround > 3 && toofast === false) {
     image(endimg,0,0);
-    text(fastestTimeOverall, 460,470);
+    text(fastestTimeOverall, 515,480);
     fill(255,255,255);
     textFont(fonttime);
-    textSize(20)
+    textSize(28)
   } else if(toofast === true){
     image(gameover,0,0);
   }
@@ -297,13 +297,13 @@ function calculateRaceTime(){
 
 function showtime(){
   calculateRaceTime();
-  text(expiredRaceTime, 1110,345);
+  text(expiredRaceTime, 1100,345);
   if (fastestTimeOverall > 0) {
-    text(fastestTimeOverall, 1110,475);
+    text(fastestTimeOverall, 1100,475);
   }
   fill(255,255,255);
   textFont(fonttime);
-  textSize(20)
+  textSize(25)
 }
 
 function oil(){
